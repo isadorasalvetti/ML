@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1550589494776.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7D2CE6A1",
+    "lastKnownWriteTime" : 1550586345,
+    "last_content_update" : 1550586345,
+    "path" : "F:/ML/ML-MIRI-L1/ML-MIRI-L1-Part1.R",
+    "project_path" : "ML-MIRI-L1-Part1.R",
+    "properties" : {
+        "cursorPosition" : "481,0",
+        "scrollLine" : "449"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
