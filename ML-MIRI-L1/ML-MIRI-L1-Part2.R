@@ -9,6 +9,7 @@
 # This exercise involves the use of the 'Auto' data set, which can be found in the file 'Auto.data'. 
 # The file contains a number of variables for cars.
 
+source ("auxiliary.R")
 graphics.off()      # reset/close all graphical devices 
 
 
@@ -85,7 +86,9 @@ methods(xtable)
 dim(Auto)
 
 # 2. identify possible target variables according to classification or regression problems
-#???
+# Liters per 100km -> Cillinders, horsepower, weight, displacement, acceleration.
+# Weight -> Cillinders, horsepower, displacement
+# Acceleration -> Horsepower, weight, cillinders, l.100km
 
 # 3. inspect the first 4 examples and the predictive variables 6 and 7 for the tenth example
 
@@ -105,10 +108,29 @@ plot(Cylinders, HorsePower)
 
 
 # 5. make a decision on a sensible treatment for the missing values and apply it; 
+Auto.complete = na.omit(Auto)
+summary(Auto.complete)
+summary(Auto)
 
-#    WARNING: 'origin' is categorical and cannot be used for knn imputation, unless you make it binary temporarily
+detach(Auto)
+attach(Auto)
+
+#  WARNING: 'origin' is categorical and cannot be used for knn imputation, unless you make it binary temporarily
+summary(horsepower) #5 NA
+
+origin = as.numeric(origin)
+origin[is.na(origin)] = 1
+origin.factor = Auto[, "origin"]
+Auto[, "origin"] = origin
+
+summary(origin)
+
+horsepower = knn.imputation (horsepower, "horsepower")
+summary(horsepower) #No NA
 
 # 6. derive one new continuous variable: weight/horsepower; derive one new categorical variable: sports_car, satisfying horsepower > 1.2*mean(horsepower) AND acceleration < median(acceleration); do you think this new variable is helpful in predicting 'origin' ?
+# WEIGHT/HORSEPOWER
+
 
 # 7. create a new dataframe that gathers everything and inspect it again
 

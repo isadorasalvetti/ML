@@ -2,7 +2,7 @@ library(class) # knn
 
 knn.imputation = function (variable, varname)
 {  
-  aux = subset (Credit, select = names(Credit)[names(Credit) != varname])
+  aux = subset (Auto, select = names(Auto)[names(Auto) != varname])
   aux1 = aux[!is.na(variable),]
   aux2 = aux[is.na(variable),]
 
@@ -10,7 +10,7 @@ knn.imputation = function (variable, varname)
   knn.inc = knn (aux1,aux2, variable[!is.na(variable)])
   variable[is.na(variable)] = as.numeric(as.character(knn.inc))
   variable
-} 
+}
 
 hist.with.normal = function (x, main, xlabel=deparse(substitute(x)), ...)
 {
