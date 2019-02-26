@@ -33,10 +33,21 @@ plot(x=data.1$x[,1], y=data.1$x[,2])
 
 # 1. Decide beforehand which clustering method will work best and with which settings.
 #    Hint: have a look at the way the data is generated: ?mlbench.2dnormals
+summary(data.1)
+
 # 2. Apply k-means a number of times with fixed K=6 and observe the results
+K <- 2
+kmeans2.2 <- cclust (data.1$obs,K,iter.max=100,method="kmeans",dist="euclidean")
+
+
 # 3. Apply k-means with a choice of K values of your own and monitor the CH index; which K looks better?
 # 4. Apply E-M with K=6 and observe the results (means, coefficients and covariances)
 # 5. Check the results against tour expectations (#1.)
+
+
+
+
+
 
 ####################################################################
 ## Exercise 2:  Clustering real 2-D data
