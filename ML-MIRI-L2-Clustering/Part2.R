@@ -72,6 +72,8 @@ qplot(waiting, duration, data=geyser)
 # 6. Decide beforehand which clustering method will work best and with which settings.
 #    No hint this time, this is a real dataset
 # 7. Apply k-means with different values of K and observe the results
+kmeans0 = cclust(data.1,K,iter.max=100,method="kmeans",dist="euclidean")
+
 # 8. Apply k-means 100 times, get averages of the CH index, and decide the best value of K. Does it work?
 # 9. Apply E-M with a family of your choice ("spherical", "diagonal", etc), with the best value fo K delivered by k-means
 # 10. Choose the model and number of clusters with the largest BIC

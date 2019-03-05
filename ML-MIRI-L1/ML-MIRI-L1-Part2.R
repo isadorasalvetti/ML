@@ -112,8 +112,7 @@ Auto.complete = na.omit(Auto)
 summary(Auto.complete)
 summary(Auto)
 
-detach(Auto)
-attach(Auto)
+attach(Auto.complete)
 
 #  WARNING: 'origin' is categorical and cannot be used for knn imputation, unless you make it binary temporarily
 summary(horsepower) #5 NA
@@ -130,13 +129,34 @@ summary(horsepower) #No NA
 
 # 6. derive one new continuous variable: weight/horsepower; derive one new categorical variable: sports_car, satisfying horsepower > 1.2*mean(horsepower) AND acceleration < median(acceleration); do you think this new variable is helpful in predicting 'origin' ?
 # WEIGHT/HORSEPOWER
+HPoW = horsepower/weight
+hist(HPoW)
 
+#SPORTS.CAR
+sportsCar = rep(FALSE, NROW(horsepower))
+sportsCar[horsepower > 1.2*median(horsepower) & acceleration < median(acceleration)] = TRUE
+sportsCar = as.factor(sportsCar)
 
 # 7. create a new dataframe that gathers everything and inspect it again
+#Add new variables
+Auto.complete = cbind(Auto.complete, HPoW)
+Auto.complete = cbind(Auto.complete, sportsCar)
+summary(Auto.complete)
 
 # 8. perform a graphical summary of some of the variables (both categorical and continuous)
+rm(HPoW)
+rm(sportsCar)
+detach(Auto.complete)
+attach(Auto.complete)
+
+
+hist(acceleration)
+plot(cylinders, l.100km)
+plot(acceleration, horsepower)
+plot(weight, displacement)
 
 # 9. perform a graphical comparison between some pairs of variables (both categorical and continuous)
+plot(sportsCar, origin) #Good prediction corretation
 
 # 10. do any of the continuous variables "look" Gaussian? can you transform some variable so that it looks more so?
 
