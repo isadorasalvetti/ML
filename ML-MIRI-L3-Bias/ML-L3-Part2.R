@@ -40,3 +40,31 @@ curve(f, type="l", col="blue", add=TRUE)
 
 # The models are going to be polynomials of degrees of your choice (I suggest 1,2,3,4,5,8).
 
+## COMPARE POLINOMIALS
+#Dataset
+x <- runif(N,0,15)                 
+t <- f(x) + rnorm(N, sd=0.1)
+
+degrees <- c(1,2,3,4,5,8)
+for (i in degrees) 
+{
+  plot(data.frame(x, t), xlab=paste("Polynomial fit of degree ", i), ylab="f(x)")
+  curve(f, type="l", col="green", add=TRUE)
+  polyfit <- lm(t ~ poly(x, i, raw=TRUE))
+  p <- polynom(coef(polyfit))
+  curve(p, col="red", add=TRUE)
+}
+
+## GENERATE MORE DATASETS
+deg = 1
+for (i in 1:10)
+{
+  x <- runif(N,0,15)                 
+  t <- f(x) + rnorm(N, sd=0.1)
+  
+  plot(data.frame(x, t), xlab=paste("Polynomial fit of degree 1, data sample", i), ylab="f(x)")
+  curve(f, type="l", col="green", add=TRUE)
+  polyfit <- lm(t ~ poly(x, deg, raw=TRUE))
+  p <- polynom(coef(polyfit))
+  curve(p, col="red", add=TRUE)
+}
