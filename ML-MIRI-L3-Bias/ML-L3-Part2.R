@@ -44,27 +44,49 @@ curve(f, type="l", col="blue", add=TRUE)
 #Dataset
 x <- runif(N,0,15)                 
 t <- f(x) + rnorm(N, sd=0.1)
+errors <- matrix (nrow=6, ncol=3)
+colnames(errors) <- c("Degree","TR.NRMSE","VA.NRMSE")
 
+## Generate only polinomials.
 degrees <- c(1,2,3,4,5,8)
-for (i in degrees) 
+for (i in 1:length(degrees))
 {
-  plot(data.frame(x, t), xlab=paste("Polynomial fit of degree ", i), ylab="f(x)")
+  #PLOT DATA
+  plot(data.frame(x, t), xlab=paste("Polynomial fit of degree ", degrees[i]), ylab="f(x)")
   curve(f, type="l", col="green", add=TRUE)
-  polyfit <- lm(t ~ poly(x, i, raw=TRUE))
+  
+  #FIT MODEL
+  polyfit <- lm(t ~ poly(x, degrees[i], raw=TRUE))
+  
+  #GET TRAINING ERROR
+  errors[i, "Degree"] <- degrees[i]
+  errors[i, "TR.NRMSE"] <- sqrt( sum(polyfit$residuals^2) / ((N-1)*var(t)) )
+  
+  #PRINT
   p <- polynom(coef(polyfit))
   curve(p, col="red", add=TRUE)
 }
 
-## GENERATE MORE DATASETS
-deg = 1
-for (i in 1:10)
-{
-  x <- runif(N,0,15)                 
-  t <- f(x) + rnorm(N, sd=0.1)
-  
-  plot(data.frame(x, t), xlab=paste("Polynomial fit of degree 1, data sample", i), ylab="f(x)")
-  curve(f, type="l", col="green", add=TRUE)
-  polyfit <- lm(t ~ poly(x, deg, raw=TRUE))
-  p <- polynom(coef(polyfit))
-  curve(p, col="red", add=TRUE)
+
+## Validate models ?????
+for (deg in degrees){
+  for (i in 1:5)
+  {
+    x.v <- runif(N,0,15)                 
+    t.v <- f(x) + rnorm(N, sd=0.1)
+    
+    plot(data.frame(x, t), xlab=paste(paste("Polynomial fit of degree", deg, "data sample"), i), ylab="f(x)")
+    curve(f, type="l", col="green", add=TRUE)
+    polyfit <- lm(t ~ poly(x, deg, raw=TRUE))
+    p <- polynom(coef(polyfit))
+    curve(p, col="red", add=TRUE)
+    
+    # fill in degree, training error and validation error (both are NRMSEs)
+    predictions <- predict(polyfit, newdata=val)
+    errors[i, "VA.NRMSE"] <- sqrt( sum((t - predictions)^2) / ((N-1)*var(t)) )
+    points(data.frame(x, predict(polyfit, newdata=val)), col="red") # these are the predictions
+  }
 }
+
+errors
+

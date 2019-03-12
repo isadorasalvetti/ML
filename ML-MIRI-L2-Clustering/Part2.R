@@ -164,10 +164,24 @@ summary(z)
 fammodel <- mixmodGaussianModel (family="general", equal.proportions=FALSE)
 z <- mixmodCluster (data.frame(g),models = fammodel, nbCluster = 2:6)
 summary(z)
+fammodel <- mixmodGaussianModel (family="spherical", equal.proportions=FALSE) #-! (highest BIC)
+z <- mixmodCluster (data.frame(g),models = fammodel, nbCluster = 2:8)
+summary(z)
+fammodel <- mixmodGaussianModel (family="diagonal", equal.proportions=FALSE)
+z <- mixmodCluster (data.frame(g),models = fammodel, nbCluster = 2:6)
+summary(z)
+
 
 # 11. Apply E-M again with a family of your choice ("spherical", "diagonal", etc), this time letting BIC decide the best number of clusters
 #     The easiest way to inspect the final results is with summary() of your mixmodCluster() call
+fammodel <- mixmodGaussianModel (family="spherical", equal.proportions=FALSE) #-! (highest BIC)
+z <- mixmodCluster (data.frame(g),models = fammodel, nbCluster = 2:8)
+summary(z)
 
+#but... this one?
+fammodel <- mixmodGaussianModel (family="general", equal.proportions=FALSE)
+z <- mixmodCluster (data.frame(g),models = fammodel, nbCluster = 2:6)
+summary(z)
 
 # 12. Once you're done, try and plot the results; just plot() the result of mixmodCluster()
 #Plot Clusters
