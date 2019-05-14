@@ -11,6 +11,9 @@
 ## Exercise: Play with the SVM for classification of 2D data (3 classes)
 ####################################################################
 
+#Add seed
+set.seed(123)
+
 N <- 300
 
 circle.data <- function(N) 
@@ -44,3 +47,19 @@ plot(dataset$x1,dataset$x2, col=as.factor(dataset$target))
 # 5. Choose your best model by playing a little bit with the C parameter
 # 6. Refit it using the whole learning part
 # 7. Use this model to predict the test part anf give a final prediction error
+
+##################################
+#Split data:
+smp_size <- floor(0.66 * nrow(dataset))
+train_ind <- sample(seq_len(nrow(dataset)), size = smp_size)
+
+data.train <- dataset[train_ind, ]
+data.test <- dataset[-train_ind, ]
+
+# Quadradic Kernel.
+library(e1071)
+source("plot-prediction.R")
+
+model <- svm(data.train[,1:2],data.train[,3], type="C-classification", cost=1, kernel="polynomial", degree=2, coef0=1, scale = FALSE)
+plot(data.train$x1,data.train$x2, col=as.factor(data.train$target))
+plot.prediction (model, paste ("quadratic kernel (C=", 1, ") ", model$tot.nSV, " Support Vectors", sep=""))
