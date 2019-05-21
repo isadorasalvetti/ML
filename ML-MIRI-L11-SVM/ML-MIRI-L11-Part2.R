@@ -53,13 +53,30 @@ plot(dataset$x1,dataset$x2, col=as.factor(dataset$target))
 smp_size <- floor(0.66 * nrow(dataset))
 train_ind <- sample(seq_len(nrow(dataset)), size = smp_size)
 
+plot(data.train$x1,data.train$x2, col=as.factor(data.train$target))
+
 data.train <- dataset[train_ind, ]
 data.test <- dataset[-train_ind, ]
 
-# Quadradic Kernel.
 library(e1071)
+library(kernlab)
 source("plot-prediction.R")
 
-model <- svm(data.train[,1:2],data.train[,3], type="C-classification", cost=1, kernel="polynomial", degree=2, coef0=1, scale = FALSE)
-plot(data.train$x1,data.train$x2, col=as.factor(data.train$target))
-plot.prediction (model, paste ("quadratic kernel (C=", 1, ") ", model$tot.nSV, " Support Vectors", sep=""))
+# Quadradic Kernel.
+C <- 1
+modelQ <- svm(data.train[,1:2],data.train$target, type="C-classification", cost=C, kernel="polynomial", degree=2, coef0=1, scale = FALSE)
+plot.prediction (model, paste ("quadratic kernel (C=", C, ") ", model$tot.nSV, " Support Vectors", sep=""))
+pred <- predict(modelQ,data.test[,1:2])
+error <- sum(pred != data.test$target)/length(data.test$target)
+
+#Linear - worst
+modelL <- svm(data.train[,1:2],data.train$target, type="C-classification", cost=C, kernel="linear", coef0=1, scale = FALSE)
+plot.prediction (model, paste ("linear kernel (C=", C, ") ", model$tot.nSV, " Support Vectors", sep=""))
+pred <- predict(modelL,data.test[,1:2])
+error <- sum(pred != data.test$target)/length(data.test$target)
+
+#Radial
+modelR <- svm(data.train[,1:2],data.train$target, type="C-classification", cost=C, kernel="radial", coef0=1, scale = FALSE)
+plot.prediction (model, paste ("radial-basis kernel (C=", C, ") ", model$tot.nSV, " Support Vectors", sep=""))
+pred <- predict(modelR,data.test[,1:2])
+error <- sum(pred != data.test$target)/length(data.test$target)
